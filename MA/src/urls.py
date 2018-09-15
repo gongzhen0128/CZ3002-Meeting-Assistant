@@ -27,6 +27,10 @@ urlpatterns = [
     path('history/', views.history, name='history'),
     path('register/', views.register, name='register'),
     path('script/', views.script, name='script'),
+
+    #login url function
+    path('login/authenticate', views.authenticate, name='authenticate'),
+
 ]
 
 if settings.DEBUG:

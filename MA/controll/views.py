@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+import json
+import sqlite3
 
 # Create your views here.
 def home(request):
@@ -30,3 +33,46 @@ def script(request):
 	context = locals()
 	layout = 'script.html'
 	return render(request, layout, context)
+
+# def authenticate(request):
+# 	response_data = {}
+# 	if request.is_ajax() :
+
+# 		if request.method == 'POST':
+# 			name = request.POST.get('email')
+# 			password = request.POST.get('password')
+
+# 			#result = dbauthenticate(username,password)
+# 			sqlite_file = 'db.sqlite3'
+# 			conn = sqlite3.connect(sqlite_file)
+# 			c = conn.cursor()
+# 			c.execute("SELECT name, password FROM controll_client WHERE name='" + name +"' AND password='"+ password+"'")
+# 			result = c.fetchone()
+# 			c.close()
+# 			layout = 'login.html'
+
+# 			if(result) :
+# 				request.session['login'] = "success"
+# 				response_data['message'] = 'success'
+# 	return HttpResponse(json.dumps(response_data), content_type="application/json")
+			#return render(request, layout, {'result' : result})
+def authenticate(request):
+
+	if request.is_ajax() :
+		if request.method == 'POST':
+			data = json.loads(request.body.decode('utf-8'))
+			print(data)
+			name = data["slevel"]
+			password = data["pwd"]
+			sqlite_file = 'db.sqlite3'
+			conn = sqlite3.connect(sqlite_file)
+			c = conn.cursor()
+			c.execute("SELECT name, password FROM controll_client WHERE name='" + name +"' AND password='"+ password+"'")
+			result = c.fetchone()
+			c.close()
+			layout = 'login.html'
+			if(result) :
+ 				request.session['login'] = "success"
+ 				response_data = {}
+ 				response_data['message'] = 'success'
+	return HttpResponse(json.dumps(response_data), content_type="application/json")
