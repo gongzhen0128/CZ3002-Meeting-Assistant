@@ -4,38 +4,11 @@
 {% block content %}
 
 	<section class="page-section">
-        <div class="container" id="meetingTitle">
-        <div class="about-heading-content">
-          <div class="row">
-            <div class="col-xl-9 col-lg-10 mx-auto">
-              <div class="bg-faded rounded p-5">
-                      <div class="form-group">
-                          <label for="exampleInputEmail1">Meeting Title</label>
-                          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Title">
-   <!--                       <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
-                      </div>
-                     <button onclick="myFunction()" class="btn" id="submitTitle">Submit</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="container" id="meetingBody" style="display: none">
+      <div class="container">
           <img class="product-item-img mx-auto d-flex rounded img-fluid mb-lg-0 w-50 mb-lg-4 " src='{% static "img/hello.png" %}' alt="">
         <div class="text-center"><button class="btn btn-primary btn-xl">Start Recording</button></div>
         </div>
-
-        <div class="cta-inner text-center rounded">
-              <p class="mb-0"> </p>
-        </div>
+      </div>
     </section>
-<script>
-function myFunction() {
-    var x = document.getElementById("meetingBody");
-    var y = document.getElementById("meetingTitle");
-    x.style.display = "block";
-    y.style.display = "none";
-}
-</script>
 
 {% endblock %}

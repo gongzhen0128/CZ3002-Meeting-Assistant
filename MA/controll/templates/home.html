@@ -2,18 +2,6 @@
 {% load staticfiles %}
 
 {% block content %}
-<script type="text/javascript">
-    function loggedin(){
-        if ('<%= Session("username") == null %>'){
-            window.location.href = "{% url 'login' %}";
-        }
-        else {
-            window.location.href = "{% url 'createMeeting' %}";
-        }
-    }
-
-</script>
-
 
 	<section class="page-section clearfix">
       <div class="container">
@@ -28,7 +16,7 @@
                Meeting Assisstant supports over 120 languages.
             </p>
             <div class="intro-button mx-auto">
-              <a class="btn btn-primary btn-xl" onclick='loggedin()' >Start a Meeting</a>
+              <a class="btn btn-primary btn-xl" href="{% url 'createMeeting' %}">Start a Meeting</a>
             </div>
           </div>
         </div>

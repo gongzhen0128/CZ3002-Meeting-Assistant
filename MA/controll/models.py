@@ -11,7 +11,6 @@ class client(models.Model):
 
 class meeting(models.Model):
 	sessionid = models.CharField(max_length=10)
-	name = models.CharField(max_length=50, null=True)
 	user_name = models.CharField(max_length=50)
 	audio = models.FileField(upload_to='uploads/')
 	script = models.FileField(upload_to='uploads/')
