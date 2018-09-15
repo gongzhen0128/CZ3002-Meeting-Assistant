@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import meeting
 
 # Create your views here.
 def home(request):
@@ -17,7 +18,13 @@ def createMeeting(request):
 	return render(request, layout, context)
 
 def history(request):
-	context = locals()
+	user_name = 'zesheng'
+	if request.user.is_authenticated:
+		user_name = request.user.username
+	meeting_list = meeting.objects.filter(user_name=user_name)
+	context = {
+		'meeting_list': meeting_list,
+	}
 	layout = 'history.html'
 	return render(request, layout, context)
 
