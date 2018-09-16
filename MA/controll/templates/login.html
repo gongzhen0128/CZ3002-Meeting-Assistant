@@ -10,10 +10,10 @@
 <script type="text/javascript">
   
 function authenticate(){
-    var level = document.getElementById("email").value;
-    var password =  document.getElementById("password").value;
+    var mail = document.getElementById("email").value;
+    var pass =  document.getElementById("password").value;
     var token =  document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    alert(level+" "+token);
+    
     $.ajaxSetup({
       beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRFToken', token);
@@ -23,15 +23,18 @@ function authenticate(){
        type: "POST",
        url: "/login/authenticate",
        contentType: "application/json; charset=utf-8",
-       data:  JSON.stringify({ pwd: password, slevel: level}),
+       data:  JSON.stringify({ password: pass, email: mail}),
        dataType: "json",
        success: function (result) {
+        alert(result.message);
           if(result.message == "success"){
             alert("Successfully login");
           }
        },
        error: function(){
-            alert('Error updating reports');
+          alert('Error Logging in');
+          document.getElementById("errorMessage").style.display='block';
+
         }
     });
 }
@@ -70,7 +73,10 @@ function validateMyForm(){
                                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                                               <label class="form-check-label" for="exampleCheck1">Keep me logged in</label>
                       </div>  -->
-                      <button type="submit" onclick="authenticate()" class="btn btn-primary">Submit</button>
+                      <button type="submit" onclick="authenticate()" class="btn btn-primary">Submit</button> 
+                      <div id="errorMessage" style="display:hidden>
+                      Invalid Email or Password.  
+                      </div>
                   </form>
                   </br>
                   <p style="display: inline-block">Don't have an account yet?   </p> <a href="{% url 'register' %}" style="padding-left: 5%">  Register</a>

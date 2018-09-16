@@ -62,17 +62,16 @@ def authenticate(request):
 		if request.method == 'POST':
 			data = json.loads(request.body.decode('utf-8'))
 			print(data)
-			name = data["slevel"]
-			password = data["pwd"]
+			email = data["email"]
+			password = data["password"]
 			sqlite_file = 'db.sqlite3'
 			conn = sqlite3.connect(sqlite_file)
 			c = conn.cursor()
-			c.execute("SELECT name, password FROM controll_client WHERE name='" + name +"' AND password='"+ password+"'")
+			c.execute("SELECT name, password FROM controll_client WHERE name='" + email +"' AND password='"+ password+"'")
 			result = c.fetchone()
 			c.close()
-			layout = 'login.html'
+			print(result)
 			if(result) :
  				request.session['login'] = "success"
- 				response_data = {}
  				response_data['message'] = 'success'
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
