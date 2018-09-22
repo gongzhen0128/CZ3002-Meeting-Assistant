@@ -21,7 +21,7 @@ from controll import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='open'),
+    # path('', views.home, name='open'),
     path('home/', views.home, name='home'),
     path('login/', views.login, name='login'),
 
