@@ -26,13 +26,14 @@ function authenticate(){
        data:  JSON.stringify({ password: pass, email: mail}),
        dataType: "json",
        success: function (result) {
-        alert(result.message);
+        //alert(result.message);
           if(result.message == "success"){
-            alert("Successfully login");
+            //alert("Successfully login");
+            
           }
        },
        error: function(){
-          alert('Error Logging in');
+          //alert('Error Logging in');
           document.getElementById("errorMessage").style.display='block';
 
         }
@@ -55,7 +56,7 @@ function validateMyForm(){
               <div class="bg-faded rounded p-5">
                 <h2 class="section-heading mb-4">
  <!--                 <span class="section-heading-upper">Strong Coffee, Strong Roots</span>   -->
-                  <span class="section-heading-lower">Login</span>
+                  <span id="login" class="section-heading-lower">Login</span>
                 </h2>
 
                   <form action="/login/authenticate" onsubmit="event.preventDefault(); return validateMyForm();" method="POST">

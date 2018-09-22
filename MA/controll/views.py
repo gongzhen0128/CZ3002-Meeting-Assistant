@@ -65,7 +65,7 @@ def script(request):
 # 	return HttpResponse(json.dumps(response_data), content_type="application/json")
 			#return render(request, layout, {'result' : result})
 def authenticate(request):
-
+	response_data = {}
 	if request.is_ajax() :
 		if request.method == 'POST':
 			data = json.loads(request.body.decode('utf-8'))
@@ -78,7 +78,7 @@ def authenticate(request):
 			c.execute("SELECT name, password FROM controll_client WHERE name='" + email +"' AND password='"+ password+"'")
 			result = c.fetchone()
 			c.close()
-			print(result)
+			print("result: "+str(result))
 			if(result) :
  				request.session['login'] = "success"
  				response_data['message'] = 'success'
