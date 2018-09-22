@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import json
 import sqlite3
 from .models import meeting
+from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
@@ -25,7 +26,13 @@ def history(request):
 	user_name = 'zesheng'
 	if request.user.is_authenticated:
 		user_name = request.user.username
-	meeting_list = meeting.objects.filter(user_name=user_name)
+	# meetings = meeting.objects.filter(user_name=user_name)
+	meetings = meeting.objects.all()
+	paginator = Paginator(meetings, 1)
+
+	page = request.GET.get('page','1')
+	meeting_list = paginator.page(page)
+
 	context = {
 		'meeting_list': meeting_list,
 	}
