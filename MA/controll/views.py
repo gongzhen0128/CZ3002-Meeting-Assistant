@@ -93,3 +93,4 @@ def authenticate(request):
  				request.session['login'] = "success"
  				response_data['message'] = 'success'
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
+

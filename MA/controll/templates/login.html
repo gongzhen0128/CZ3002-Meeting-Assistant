@@ -29,11 +29,11 @@ function authenticate(){
         //alert(result.message);
           if(result.message == "success"){
             //alert("Successfully login");
-            
+            window.location.href = "/home";
           }
        },
        error: function(){
-          //alert('Error Logging in');
+          alert('Error Logging in');
           document.getElementById("errorMessage").style.display='block';
 
         }
