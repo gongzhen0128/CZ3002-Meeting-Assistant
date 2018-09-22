@@ -16,7 +16,7 @@
               <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
               {% for meeting in meeting_list %}
                 <li class="list-unstyled-item list-hours-item d-flex">
-                  <a href="{% url 'script' %}">{{meeting.name}}</a>
+                  <a href="{% url 'script' %}">{{meeting.sessionid}}</a>
                   <span class="ml-auto">{{meeting.dateTime}}</span>
                 </li>
                   <!--<li><a href="/ps/{{ question.id }}/">{{ question.question_text }}</a></li>-->
@@ -25,6 +25,24 @@
             {% else %}
                  <p>No meetings are stored.</p>
             {% endif %}
+
+              <div class="pagination">
+                <span class="step-links">
+                  {% if meeting_list.has_previous %}
+                      <a href="?page=1">&laquo; first</a>
+                      <a href="?page={{ meeting_list.previous_page_number }}">previous</a>
+                  {% endif %}
+
+                  <span class="current">
+                      Page {{ meeting_list.number }} of {{ meeting_list.paginator.num_pages }}.
+                  </span>
+
+                  {% if meeting_list.has_next %}
+                      <a href="?page={{ meeting_list.next_page_number }}">next</a>
+                      <a href="?page={{ meeting_list.paginator.num_pages }}">last &raquo;</a>
+                  {% endif %}
+                </span>
+              </div>
                 <!--<li class="list-unstyled-item list-hours-item d-flex">-->
                   <!--<a href="{% url 'script' %}">Meeting 1</a>-->
                   <!--<span class="ml-auto">2018-09-12 1000</span>-->
