@@ -122,9 +122,9 @@ STATIC_URL = '/static/'
 
 if DEBUG:
     MEDIA_URL = '/media/'
-    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "CZ3002-Meeting-Assistant/static", "static-only")
-    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "CZ3002-Meeting-Assistant/static", "media")
+    STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR + "/"), "static", "static-only")
+    MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR + "/"), "static", "media")
     STATICFILES_DIRS = (
-        os.path.join(os.path.dirname(BASE_DIR), "CZ3002-Meeting-Assistant/static", "static"),
-        os.path.join(os.path.dirname(BASE_DIR), "CZ3002-Meeting-Assistant/static", "media"),
+        os.path.join(os.path.dirname(BASE_DIR + "/"), "static", "static"),
+        os.path.join(os.path.dirname(BASE_DIR + "/"), "static", "media"),
     )
