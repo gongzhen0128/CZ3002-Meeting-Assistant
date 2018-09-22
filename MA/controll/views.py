@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.decorators import api_view
 import json
 import sqlite3
 from .models import meeting
+from django.core.paginator import Paginator
 
 # Create your views here.
+@api_view(["GET"])
+
 def home(request):
 	context = locals()
 	layout = 'home.html'
@@ -25,7 +29,13 @@ def history(request):
 	user_name = 'zesheng'
 	if request.user.is_authenticated:
 		user_name = request.user.username
-	meeting_list = meeting.objects.filter(user_name=user_name)
+	# meetings = meeting.objects.filter(user_name=user_name)
+	meetings = meeting.objects.all()
+	paginator = Paginator(meetings, 1)
+
+	page = request.GET.get('page','1')
+	meeting_list = paginator.page(page)
+
 	context = {
 		'meeting_list': meeting_list,
 	}
@@ -83,3 +93,4 @@ def authenticate(request):
  				request.session['login'] = "success"
  				response_data['message'] = 'success'
 	return HttpResponse(json.dumps(response_data), content_type="application/json")
+
