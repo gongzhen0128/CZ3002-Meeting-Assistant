@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        function loggedin(){
+                window.location.href = "{% url 'createMeeting' %}";
+        }
+        function notloggedin(){
+                window.location.href = "{% url 'login' %}";
+        }
+    </script>
+
+
+	<section class="page-section clearfix">
+      <div class="container">
+        <div class="intro">
+          <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src='{% static "img/meeting.jpg" %}' alt="">
+          <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+            <h2 class="section-heading mb-4">
+<!--              <span class="section-heading-upper">Fresh Coffee</span>    -->
+              <span class="section-heading-lower">Speech to Text</span>
+            </h2>
+            <br class="mb-3">Boost up your meetings with your voice. </br> Your efficient and elegant choice. </br> Simply click on start button and it will capture your voice and translate to text automatically. </br>
+               Meeting Assisstant supports over 120 languages.
+            </p>
+            <div class="intro-button mx-auto">
+          <!--    <a class="btn btn-primary btn-xl" href="{% url 'createMeeting' %}">Start a Meeting</a> -->
+
+                {% if 'login' in request.session %}<a class="btn btn-primary btn-xl" onclick='loggedin()' >Start a Meeting</a>
+                {% else %}<a class="btn btn-primary btn-xl" onclick='notloggedin()' >Login</a>{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+              <h2 class="section-heading mb-4">
+  <!--              <span class="section-heading-upper">Our Promise</span>  -->
+                <span class="section-heading-lower">Organise Past Meetings</span>
+              </h2>
+              <p class="mb-0">Meeting assistant can summarise meeting content and sort them out by topics. </br> You are always welcome to come back and review the meeting history! </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+{% endblock %}
