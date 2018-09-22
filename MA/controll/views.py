@@ -1,11 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.decorators import api_view
 import json
 import sqlite3
 from .models import meeting
 from django.core.paginator import Paginator
 
 # Create your views here.
+@api_view(["GET"])
+
 def home(request):
 	context = locals()
 	layout = 'home.html'
