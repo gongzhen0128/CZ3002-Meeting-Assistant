@@ -23,6 +23,7 @@ def logout(request):
 	context = locals()
 	print(login)
 	del request.session['login']
+	del request.session['uname']
 	print(login)
 	layout = 'home.html'
 	return render(request, layout, context)
