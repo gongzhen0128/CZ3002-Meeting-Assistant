@@ -11,11 +11,11 @@ class client(models.Model):
 		return self.email
 
 class meeting(models.Model):
-	sessionid = models.CharField(primary_key = True, max_length=10)
+	sessionid = models.CharField(primary_key = True, max_length=50)
 	name = models.CharField(max_length=50, null=True)
 	user_name = models.CharField(max_length=500, null=True)
 	script = models.CharField(max_length=5000000000, null=True)
 	dateTime = models.DateTimeField(default=timezone.now)
 
 	def __str__(self):
-		return self.sessionid
+		return self.name

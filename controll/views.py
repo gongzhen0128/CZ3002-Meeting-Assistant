@@ -12,6 +12,7 @@ from controll.forms import ClientRegisterForm
 from django.core.paginator import Paginator
 from .script_util import *
 
+currentScript = None
 
 # Create your views here.
 def home(request):
@@ -48,6 +49,7 @@ def createMeeting(request):
             old_meeting = meeting.objects.get(sessionid=data['sessionid'])
             old_meeting.script = data['script']
             old_meeting.save()
+            return redirect('script/' + data['sessionid'])
         else:
             new_meeting = meeting(sessionid=data['sessionid'], name=data['name'], user_name=request.session['uname'])
             new_meeting.save()
@@ -105,6 +107,7 @@ def script(request, sessionid):
 # @require_POST
 @csrf_exempt
 def summary(request):
+    global currentScript
     s = {}
     if request.is_ajax():
         if request.method == 'POST':
@@ -112,11 +115,11 @@ def summary(request):
             t = data['type']
             text = data['text']
             if t == 'Topic Summary':
+                currentScript = text
                 s['text'] = get_summary(text)
             else:
-                s['text'] = """
-        A meeting is a gathering of two or more people that has been convened[by whom?] for the purpose of achieving a common goal through verbal interaction, such as sharing information or reaching agreement.[2] Meetings may occur face-to-face or virtually, as mediated by communications technology, such as a telephone conference call, a skyped conference call or a videoconference.One can distinguish a meeting from other gatherings, such as a chance encounter (not convened), a sports game or a concert (verbal interaction is incidental), a party or the company of friends (no common goal is to be achieved) and a demonstration (whose common goal is achieved mainly through the number of demonstrators present, not through verbal interaction).Meeting planners and other meeting professionals may use the term "meeting" to denote an event booked at a hotel, convention center or any other venue dedicated to such gatherings.[2][3] In this sense, the term "meeting" covers a lecture (one presentation), seminar (typically several presentations, small audience, one day), conference (mid-size, one or more days), congress (large, several days), exhibition or trade show (with manned stands being visited by passers-by), workshop (smaller, with active participants), training course, team-building session and kick-off event. Although the Occupational Information Network (O*NET), sponsored by the United States Department of Labor and Employment and Training Administration, identified this occupation as "meeting and convention planner," other titles are more commonly used. These titles include event planner, meeting planner, and meeting manager. In addition, a number of other titles specific to the categories of events produced are used, such as corporate planner and party plannerThe banquet event order (BEO), a standard form used in the hospitality industry to document the requirements of an event as pertinent to the venue,[3] has presented numerous problems to meeting and convention planners due to the increasing complexity and scope of modern events. In response, Convention Industry Council developed the event specifications guide (ESG) that is currently replacing the BEO.[4]Additionally, the Convention Industry Council is spearheading The Accepted Practices Exchange (APEX). By bringing planners and suppliers together to create industry-wide accepted practices and a common terminology, the profession continues to enhance the professionalism of the meetings, conventions and exhibitions industry.
-        """
+                print(currentScript)
+                s['text'] = currentScript
     return    HttpResponse(json.dumps(s), content_type='application/json')
 
 
