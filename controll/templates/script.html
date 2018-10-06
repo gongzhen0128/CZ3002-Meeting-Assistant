@@ -2,8 +2,97 @@
 {% load staticfiles %}
 
 {% block content %}
+<script>
+    var fileName =  'meetingScript.txt';
+    var lang = "en";
+    const apiKey = "AIzaSyCyfyVPn-B32wrLWmn1NipiK822dRxXGhg";
+    // Set endpoints
+    const endpoints = {
+      translate: "",
+      detect: "detect",
+      languages: "languages"
+    };
+    var origin = "";
+
+    function downloadInnerHtml(filename, elId, mimeType) {
+        var elHtml = document.getElementById(elId).innerHTML;
+        var link = document.createElement('a');
+        var currentClass = "currentLang";
+        var mimeType = mimeType || 'text/plain';
+        link.setAttribute('download', filename);
+        link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
+        link.click(); 
+    }
+
+    function downloadMeetingScript(){
+        downloadInnerHtml(fileName, 'script','text/html');
+    }
+
+        // Abstract API request function
+    function makeApiRequest(endpoint, data, type, authNeeded) {
+      url = "https://www.googleapis.com/language/translate/v2/" + endpoint;
+      url += "?key=" + apiKey;
+      
+      // If not listing languages, send text to translate
+      if (endpoint !== endpoints.languages) {
+        url += "&q=" + encodeURI(data.textToTranslate);
+      }
+
+      // If translating, send target and source languages
+      if (endpoint === endpoints.translate) {
+        url += "&target=" + data.targetLang;
+        url += "&source=" + data.sourceLang;
+      }
+
+      // Return response from API
+      return $.ajax({
+        url: url,
+        type: type || "GET",
+        data: data ? JSON.stringify(data) : "",
+        dataType: "json",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        }
+      });
+    }
+
+    function translates(data) {
+        makeApiRequest(endpoints.translate, data, "GET", false).success(function(resp) {
+        //alert(resp.data.translations[0].translatedText);
+        document.getElementById('script').innerHTML = resp.data.translations[0].translatedText;
+        });
+    }
 
 
+    function trans(){
+        var toLang = document.getElementById("language").value;
+        if(origin==""){
+            origin = document.getElementById('script').innerHTML;
+        }
+        if(toLang == "en"){
+            document.getElementById('script').innerHTML = origin;
+        }
+        else{
+            translationObj = {
+                sourceLang: 'en',
+                targetLang: toLang,
+                textToTranslate: origin,
+            };
+
+          if (translationObj.targetLang !== null) {
+            translates(translationObj);
+            lang = toLang;
+          } else {
+            alert("An error has occured");
+          }
+        }
+
+        //get content to translate
+        var content = document.getElementById('script').innerHTML;    
+    }
+
+</script>
 
 <section class="page-section cta">
     <div class="container">
@@ -13,19 +102,13 @@
                     <h2 class="section-heading mb-4 ">
                         <span class="section-heading-lower">Meeting ? Script</span>
                     </h2>
-
                     <div class="dropdown " style="margin-bottom:10px; margin-left: 80%; ">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown";>
-                           Languages
-                        </button>
-                        <div class="dropdown-menu" style="font-size: small">
-                            <a class="dropdown-item" href="#">Original</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">English</a>
-                            <a class="dropdown-item" href="#">Chinese</a>
-                            <a class="dropdown-item" href="#">Malay</a>
-                            <a class="dropdown-item" href="#">Tamil</a>
-                        </div>
+                        <select class="form-control btn btn-primary dropdown-toggle" id="language" style="width:120px;" onchange="trans()">
+                            <option value="en">English</option>
+                            <option value="zh-CN">Chinese</option>
+                            <option value="ms">Malay</option>
+                            <option value="ta">Tamil</option>
+                        </select>
                     </div>
 
                     <div style="margin-top:20px;height:400px;width:100%;overflow:auto;background-color:#bbccdd; scrollbar-base-color:gold;font-family:sans-serif;padding:20px">
@@ -36,24 +119,13 @@
                     </span>
                     </div>
 
-
-
-
- <!--                   <div id="audio">
-                        <audio
-                                id="meeting_audio" controls
-                                src="http://soundbible.com/mp3/Tyrannosaurus%20Rex%20Roar-SoundBible.com-807702404.mp3">
-                            Your browser does not support the <code>audio</code> element.
-                        </audio>
-                    </div>-->
-                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary" id="btnSum">Topic Summary</button>
-                    <button style="margin-top:30px; margin-bottom:30px"  class="btn btn-primary">Download</button>
+                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary">Topic Summary</button>
+                    <button style="margin-top:30px; margin-bottom:30px" onclick="downloadMeetingScript()" class="btn btn-primary">Download</button>
 
                 </div>
             </div>
         </div>
     </div>
-</section>
 </section>
 
 <script src='{% static "js/jquery.min.js" %}'></script>
