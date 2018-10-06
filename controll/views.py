@@ -60,13 +60,9 @@ def history(request):
     if 'login' not in request.session:
         return redirect('home')
     else:
-        context = locals()
-        user_name = 'zesheng'
-        if request.user.is_authenticated:
-            user_name = request.user.username
-        # meetings = meeting.objects.filter(user_name=user_name)
-        meetings = meeting.objects.all()
-        paginator = Paginator(meetings, 1)
+        user_name = request.session['uname']
+        meetings = meeting.objects.filter(user_name=user_name)
+        paginator = Paginator(meetings, 5)
 
         page = request.GET.get('page', '1')
         meeting_list = paginator.page(page)
@@ -95,11 +91,13 @@ def register(request):
         return render(request, layout, {'form': form})
 
 
-def script(request):
+def script(request, sessionid):
+    if 'login' not in request.session:
+        return redirect('home')
+    else:
+        m = meeting.objects.get(sessionid=sessionid)
     context = {
-        'text': """
-        A meeting is a gathering of two or more people that has been convened[by whom?] for the purpose of achieving a common goal through verbal interaction, such as sharing information or reaching agreement.[2] Meetings may occur face-to-face or virtually, as mediated by communications technology, such as a telephone conference call, a skyped conference call or a videoconference.One can distinguish a meeting from other gatherings, such as a chance encounter (not convened), a sports game or a concert (verbal interaction is incidental), a party or the company of friends (no common goal is to be achieved) and a demonstration (whose common goal is achieved mainly through the number of demonstrators present, not through verbal interaction).Meeting planners and other meeting professionals may use the term "meeting" to denote an event booked at a hotel, convention center or any other venue dedicated to such gatherings.[2][3] In this sense, the term "meeting" covers a lecture (one presentation), seminar (typically several presentations, small audience, one day), conference (mid-size, one or more days), congress (large, several days), exhibition or trade show (with manned stands being visited by passers-by), workshop (smaller, with active participants), training course, team-building session and kick-off event. Although the Occupational Information Network (O*NET), sponsored by the United States Department of Labor and Employment and Training Administration, identified this occupation as "meeting and convention planner," other titles are more commonly used. These titles include event planner, meeting planner, and meeting manager. In addition, a number of other titles specific to the categories of events produced are used, such as corporate planner and party plannerThe banquet event order (BEO), a standard form used in the hospitality industry to document the requirements of an event as pertinent to the venue,[3] has presented numerous problems to meeting and convention planners due to the increasing complexity and scope of modern events. In response, Convention Industry Council developed the event specifications guide (ESG) that is currently replacing the BEO.[4]Additionally, the Convention Industry Council is spearheading The Accepted Practices Exchange (APEX). By bringing planners and suppliers together to create industry-wide accepted practices and a common terminology, the profession continues to enhance the professionalism of the meetings, conventions and exhibitions industry.
-        """
+        'meeting':m
     }
     layout = 'script.html'
     return render(request, layout, context)

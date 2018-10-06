@@ -16,10 +16,9 @@
               <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
               {% for meeting in meeting_list %}
                 <li class="list-unstyled-item list-hours-item d-flex">
-                  <a href="{% url 'script' %}">{{meeting.sessionid}}</a>
+                  <a href="{% url 'script' meeting.sessionid %}">{{meeting.name}}</a>
                   <span class="ml-auto">{{meeting.dateTime}}</span>
                 </li>
-                  <!--<li><a href="/ps/{{ question.id }}/">{{ question.question_text }}</a></li>-->
               {% endfor %}
               </ul>
             {% else %}
@@ -43,34 +42,6 @@
                   {% endif %}
                 </span>
               </div>
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 1</a>-->
-                  <!--<span class="ml-auto">2018-09-12 1000</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 2</a>-->
-                  <!--<span class="ml-auto">2018-09-11 1300</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 3</a>-->
-                  <!--<span class="ml-auto">2018-09-10 1500</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 4</a>-->
-                  <!--<span class="ml-auto">2018-09-09 1700</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 5</a>-->
-                  <!--<span class="ml-auto">2018-09-08 1000</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 6</a>-->
-                  <!--<span class="ml-auto">2018-09-07 1500</span>-->
-                <!--</li>-->
-                <!--<li class="list-unstyled-item list-hours-item d-flex">-->
-                  <!--<a href="{% url 'script' %}">Meeting 7</a>-->
-                  <!--<span class="ml-auto">2018-09-60 1500</span>-->
-                <!--</li>-->
               </ul>
             </div>
           </div>
