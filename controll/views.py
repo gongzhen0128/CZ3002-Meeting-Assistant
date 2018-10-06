@@ -29,10 +29,8 @@ def login(request):
 
 def logout(request):
     context = locals()
-    print(login)
     del request.session['login']
     del request.session['uname']
-    print(login)
     layout = 'home.html'
     return render(request, layout, context)
 
@@ -41,7 +39,6 @@ def logout(request):
 def createMeeting(request):
     if 'login' not in request.session:
         return redirect('home')
-    print (request.session['uname'])
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
@@ -49,7 +46,6 @@ def createMeeting(request):
             old_meeting = meeting.objects.get(sessionid=data['sessionid'])
             old_meeting.script = data['script']
             old_meeting.save()
-            return redirect('script/' + data['sessionid'])
         else:
             new_meeting = meeting(sessionid=data['sessionid'], name=data['name'], user_name=request.session['uname'])
             new_meeting.save()
@@ -118,7 +114,6 @@ def summary(request):
                 currentScript = text
                 s['text'] = get_summary(text)
             else:
-                print(currentScript)
                 s['text'] = currentScript
     return    HttpResponse(json.dumps(s), content_type='application/json')
 

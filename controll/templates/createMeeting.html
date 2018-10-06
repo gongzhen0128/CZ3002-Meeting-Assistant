@@ -170,6 +170,7 @@ var final_transcript = '';
 var recognizing = false;
 var ignore_onend;
 var start_timestamp;
+var id;
 if (!('webkitSpeechRecognition' in window)) {
     upgrade();
 } else {
@@ -256,6 +257,7 @@ function saveButton() {
         }),
         type: "POST",
     });
+    window.location.href = '/script/' + id;
 }
 
 function startButton(event) {
@@ -307,7 +309,7 @@ function showButtons(style) {
 function submitTitle() {
     meeting_body.style.display = 'block';
     meeting_title.style.display = 'none';
-    var id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
     document.getElementById("session_id_span").innerHTML = "SESSION ID: " + id;
     document.getElementById("title_span").innerHTML = "TITLE: " + $("#inputTitle").val();
