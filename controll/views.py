@@ -2,10 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 import sqlite3
-
-from django.views.decorators.csrf import csrf_exempt
-
-
+from .models import meeting
 from django.contrib import messages
 from .models import client, meeting
 from controll.forms import ClientRegisterForm
@@ -33,37 +30,42 @@ def logout(request):
 
 @csrf_exempt
 def createMeeting(request):
-	if request.method == 'POST':
-		data = json.loads(request.body)
-		print (data)
-		if('script' in data):
-			old_meeting = meeting.objects.get(sessionid=data['sessionid'])
-			old_meeting.script = data['script']
-			old_meeting.save()
-		else:
-			new_meeting = meeting(sessionid=data['sessionid'], name=data['name'])
-			new_meeting.save()
+	if 'login' not in request.session:
+		return redirect('home')
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data)
+        if('script' in data):
+            old_meeting = meeting.objects.get(sessionid=data['sessionid'])
+            old_meeting.script = data['script']
+            old_meeting.save()
+        else:
+            new_meeting = meeting(sessionid=data['sessionid'], name=data['name'])
+            new_meeting.save()
 	context = locals()
 	layout = 'createMeeting.html'
 	return render(request, layout, context)
 
 def history(request):
-	context = locals()
-	user_name = 'zesheng'
-	if request.user.is_authenticated:
-		user_name = request.user.username
-	# meetings = meeting.objects.filter(user_name=user_name)
-	meetings = meeting.objects.all()
-	paginator = Paginator(meetings, 1)
+	if 'login' not in request.session:
+		return redirect('home')
+	else:
+		context = locals()
+		user_name = 'zesheng'
+		if request.user.is_authenticated:
+			user_name = request.user.username
+		# meetings = meeting.objects.filter(user_name=user_name)
+		meetings = meeting.objects.all()
+		paginator = Paginator(meetings, 1)
 
-	page = request.GET.get('page','1')
-	meeting_list = paginator.page(page)
+		page = request.GET.get('page','1')
+		meeting_list = paginator.page(page)
 
-	context = {
-		'meeting_list': meeting_list,
-	}
-	layout = 'history.html'
-	return render(request, layout, context)
+		context = {
+			'meeting_list': meeting_list,
+		}
+		layout = 'history.html'
+		return render(request, layout, context)
 
 def register(request):
 	context = locals()
@@ -82,9 +84,12 @@ def register(request):
 		return render(request, layout, {'form': form})
 
 def script(request):
-	context = locals()
-	layout = 'script.html'
-	return render(request, layout, context)
+	if 'login' not in request.session:
+		return redirect('home')
+	else:
+		context = locals()
+		layout = 'script.html'
+		return render(request, layout, context)
 
 def authenticate(request):
 	response_data = {}
