@@ -40,6 +40,7 @@ def logout(request):
 def createMeeting(request):
     if 'login' not in request.session:
         return redirect('home')
+    print (request.session['uname'])
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
@@ -48,7 +49,7 @@ def createMeeting(request):
             old_meeting.script = data['script']
             old_meeting.save()
         else:
-            new_meeting = meeting(sessionid=data['sessionid'], name=data['name'])
+            new_meeting = meeting(sessionid=data['sessionid'], name=data['name'], user_name=request.session['uname'])
             new_meeting.save()
     context = locals()
     layout = 'createMeeting.html'
