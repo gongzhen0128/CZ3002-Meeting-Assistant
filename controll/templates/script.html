@@ -3,29 +3,7 @@
 
 {% block content %}
 
-<script>
 
-function downloadInnerHtml(filename, elId, mimeType) {
-    var elHtml = document.getElementById(elId).innerHTML;
-    var link = document.createElement('a');
-    mimeType = mimeType || 'text/plain';
-
-    link.setAttribute('download', filename);
-    link.setAttribute('href', 'data:' + mimeType + ';charset=utf-8,' + encodeURIComponent(elHtml));
-    link.click(); 
-}
-
-var fileName =  'meetingScript.txt'; // You can use the .txt extension if you want
-
-function downloadMeetingScript(){
-        downloadInnerHtml(fileName, 'script','text/html');
-}
-
-
-
-
-
-</script>
 
 <section class="page-section cta">
     <div class="container">
@@ -50,9 +28,12 @@ function downloadMeetingScript(){
                         </div>
                     </div>
 
-                    <div id="script" style="margin-top:20px;height:400px;width:100%;overflow:auto;background-color:#bbccdd; scrollbar-base-color:gold;font-family:sans-serif;padding:20px">
-                            A meeting is a gathering of two or more people that has been convened[by whom?] for the purpose of achieving a common goal through verbal interaction, such as sharing information or reaching agreement.[2] Meetings may occur face-to-face or virtually, as mediated by communications technology, such as a telephone conference call, a skyped conference call or a videoconference.One can distinguish a meeting from other gatherings, such as a chance encounter (not convened), a sports game or a concert (verbal interaction is incidental), a party or the company of friends (no common goal is to be achieved) and a demonstration (whose common goal is achieved mainly through the number of demonstrators present, not through verbal interaction).Meeting planners and other meeting professionals may use the term "meeting" to denote an event booked at a hotel, convention center or any other venue dedicated to such gatherings.[2][3] In this sense, the term "meeting" covers a lecture (one presentation), seminar (typically several presentations, small audience, one day), conference (mid-size, one or more days), congress (large, several days), exhibition or trade show (with manned stands being visited by passers-by), workshop (smaller, with active participants), training course, team-building session and kick-off event. Although the Occupational Information Network (O*NET), sponsored by the United States Department of Labor and Employment and Training Administration, identified this occupation as "meeting and convention planner," other titles are more commonly used. These titles include event planner, meeting planner, and meeting manager. In addition, a number of other titles specific to the categories of events produced are used, such as corporate planner and party plannerThe banquet event order (BEO), a standard form used in the hospitality industry to document the requirements of an event as pertinent to the venue,[3] has presented numerous problems to meeting and convention planners due to the increasing complexity and scope of modern events. In response, Convention Industry Council developed the event specifications guide (ESG) that is currently replacing the BEO.[4]Additionally, the Convention Industry Council is spearheading The Accepted Practices Exchange (APEX). By bringing planners and suppliers together to create industry-wide accepted practices and a common terminology, the profession continues to enhance the professionalism of the meetings, conventions and exhibitions industry.
-                        
+                    <div style="margin-top:20px;height:400px;width:100%;overflow:auto;background-color:#bbccdd; scrollbar-base-color:gold;font-family:sans-serif;padding:20px">
+
+                    <span id="ttt">
+                            {{ text }}
+
+                    </span>
                     </div>
 
 
@@ -65,8 +46,8 @@ function downloadMeetingScript(){
                             Your browser does not support the <code>audio</code> element.
                         </audio>
                     </div>-->
-                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary">Topic Summary</button>
-                    <button style="margin-top:30px; margin-bottom:30px" onclick="downloadMeetingScript()" class="btn btn-primary">Download</button>
+                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary" id="btnSum">Topic Summary</button>
+                    <button style="margin-top:30px; margin-bottom:30px"  class="btn btn-primary">Download</button>
 
                 </div>
             </div>
@@ -75,4 +56,26 @@ function downloadMeetingScript(){
 </section>
 </section>
 
+<script src='{% static "js/jquery.min.js" %}'></script>
+<script type="text/javascript">
+$('#btnSum').click(function(){
+    $.ajax({
+      type: "POST",
+      dataType: 'json',
+      url: "{% url 'summary' %}",
+      data: JSON.stringify({type: $("#btnSum").text() , text: $("#ttt").text()}),
+      success:function(response) {
+        if ($("#btnSum").text() == "Original")
+            $("#btnSum").text("Topic Summary");
+        else
+            $("#btnSum").text("Original");
+
+        $("#ttt").text(response.text);
+      }
+    });
+})
+</script>
+
 {% endblock %}
+
+
