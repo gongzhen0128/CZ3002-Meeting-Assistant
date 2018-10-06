@@ -59,8 +59,7 @@
 
     function translates(data) {
         makeApiRequest(endpoints.translate, data, "GET", false).success(function(resp) {
-        //alert(resp.data.translations[0].translatedText);
-        document.getElementById('script').innerHTML = resp.data.translations[0].translatedText;
+        document.getElementById('script').value = resp.data.translations[0].translatedText;
         });
     }
 
@@ -68,10 +67,10 @@
     function trans(){
         var toLang = document.getElementById("language").value;
         if(origin==""){
-            origin = document.getElementById('script').innerHTML;
+            origin = document.getElementById("script").value;
         }
         if(toLang == "en"){
-            document.getElementById('script').innerHTML = origin;
+            document.getElementById('script').value = origin;
         }
         else{
             translationObj = {
@@ -89,8 +88,8 @@
         }
 
         //get content to translate
-        var content = document.getElementById('script').innerHTML;    
-    }
+        var content = document.getElementById('script').value;   
+      }
 
 </script>
 
@@ -111,15 +110,11 @@
                         </select>
                     </div>
 
-                    <div style="margin-top:20px;height:400px;width:100%;overflow:auto;background-color:#bbccdd; scrollbar-base-color:gold;font-family:sans-serif;padding:20px">
+                    <textarea id="script" style="margin-top:20px;height:400px;width:100%;overflow:auto;background-color:#bbccdd; scrollbar-base-color:gold;font-family:sans-serif;padding:20px">
+                      {{ text }}
+                    </textarea>
 
-                    <span id="ttt">
-                            {{ text }}
-
-                    </span>
-                    </div>
-
-                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary">Topic Summary</button>
+                    <button style="margin-top:30px; margin-bottom:30px; margin-right: 20px"  class="btn btn-primary" id='btnSum'>Topic Summary</button>
                     <button style="margin-top:30px; margin-bottom:30px" onclick="downloadMeetingScript()" class="btn btn-primary">Download</button>
 
                 </div>
@@ -135,14 +130,14 @@ $('#btnSum').click(function(){
       type: "POST",
       dataType: 'json',
       url: "{% url 'summary' %}",
-      data: JSON.stringify({type: $("#btnSum").text() , text: $("#ttt").text()}),
+      data: JSON.stringify({type: $("#btnSum").text() , text: $("#script").val()}),
       success:function(response) {
         if ($("#btnSum").text() == "Original")
             $("#btnSum").text("Topic Summary");
         else
             $("#btnSum").text("Original");
 
-        $("#ttt").text(response.text);
+        $("#script").val(response.text);
       }
     });
 })
