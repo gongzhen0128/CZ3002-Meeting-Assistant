@@ -2,7 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import json
 import sqlite3
-from .models import meeting
+
+from django.views.decorators.csrf import csrf_exempt
+
+
 from django.contrib import messages
 from .models import client, meeting
 from controll.forms import ClientRegisterForm
@@ -28,7 +31,18 @@ def logout(request):
 	layout = 'home.html'
 	return render(request, layout, context)
 
+@csrf_exempt
 def createMeeting(request):
+	if request.method == 'POST':
+		data = json.loads(request.body)
+		print (data)
+		if('script' in data):
+			old_meeting = meeting.objects.get(sessionid=data['sessionid'])
+			old_meeting.script = data['script']
+			old_meeting.save()
+		else:
+			new_meeting = meeting(sessionid=data['sessionid'], name=data['name'])
+			new_meeting.save()
 	context = locals()
 	layout = 'createMeeting.html'
 	return render(request, layout, context)
