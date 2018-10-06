@@ -29,6 +29,7 @@ urlpatterns = [
     path('history/', views.history, name='history'),
     path('register/', views.register, name='register'),
     path('script/', views.script, name='script'),
+    path('summary/', views.summary, name='summary'),
     path('logout/', views.logout, name='logout'),
     #login url function
     path('login/authenticate', views.authenticate, name='authenticate'),
