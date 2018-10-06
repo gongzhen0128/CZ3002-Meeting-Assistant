@@ -13,7 +13,7 @@ function authenticate(){
     var mail = document.getElementById("email").value;
     var pass =  document.getElementById("password").value;
     var token =  document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    
+    //alert(token);
     $.ajaxSetup({
       beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRFToken', token);
