@@ -14,6 +14,7 @@ requests = "*"
 pymongo = "*"
 djangorestframework = "*"
 gensim = "*"
+translate = "*"
 
 [dev-packages]
 pylint = "*"
